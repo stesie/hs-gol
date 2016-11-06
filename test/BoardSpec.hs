@@ -1,6 +1,7 @@
 module BoardSpec (main, spec) where
 
 import Test.Hspec
+import Data.Maybe (mapMaybe)
 import Board
 import Rules (isAlive)
 
@@ -14,12 +15,11 @@ preseededBoard :: [Cell] -> Board
 preseededBoard = Board 0
 
 nextGeneration :: Board -> Board
-nextGeneration (Board generation cells) = Board (succ generation) (nextGeneration' cells)
-
-nextGeneration' :: [Cell] -> [Cell]
-nextGeneration' [] = []
-nextGeneration' (x:xs)
-  | isAlive True 0 == False = nextGeneration' xs
+nextGeneration board@(Board generation cells) =
+  Board (succ generation) (mapMaybe checkCell cellsToCheck)
+  where
+    checkCell cell = if isAlive (cell `elem` cells) (livingNeighbours board cell) then Just cell else Nothing
+    cellsToCheck = [(x, y) | x <- [(leftEdge board - 1)..(rightEdge board + 1)], y <- [(topEdge board - 1)..(bottomEdge board + 1)]]
 
 leftEdge :: Board -> Integer
 leftEdge (Board _ cells) = minimum $ map fst cells
@@ -32,6 +32,9 @@ topEdge (Board _ cells) = minimum $ map snd cells
 
 bottomEdge :: Board -> Integer
 bottomEdge (Board _ cells) = maximum $ map snd cells
+
+cells :: Board -> [Cell]
+cells (Board _ xs) = xs
 
 spec :: Spec
 spec = do
@@ -48,6 +51,9 @@ spec = do
 
     it "should yield an empty board, if there are two non-adjacient living cells" $ do
       isEmpty (nextGeneration $ preseededBoard [(1, 1), (3, 3)]) `shouldBe` True
+
+    it "should handle the 'blinker' well" $ do
+      cells (nextGeneration $ preseededBoard [(0, 1), (1, 1), (2, 1)]) `shouldBe` [(1, 0), (1, 1), (1,2)]
 
   describe "#livingNeighbours" $ do
     it "should return 0 if there are no neighbours" $ do
