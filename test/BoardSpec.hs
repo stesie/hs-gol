@@ -21,18 +21,6 @@ nextGeneration board@(Board generation cells) =
     checkCell cell = if isAlive (cell `elem` cells) (livingNeighbours board cell) then Just cell else Nothing
     cellsToCheck = [(x, y) | x <- [(leftEdge board - 1)..(rightEdge board + 1)], y <- [(topEdge board - 1)..(bottomEdge board + 1)]]
 
-leftEdge :: Board -> Integer
-leftEdge (Board _ cells) = minimum $ map fst cells
-
-rightEdge :: Board -> Integer
-rightEdge (Board _ cells) = maximum $ map fst cells
-
-topEdge :: Board -> Integer
-topEdge (Board _ cells) = minimum $ map snd cells
-
-bottomEdge :: Board -> Integer
-bottomEdge (Board _ cells) = maximum $ map snd cells
-
 generation :: Board -> Integer
 generation (Board generation _) = generation
 

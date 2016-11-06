@@ -1,4 +1,4 @@
-module Board (Cell, Board (..), isEmpty, livingNeighbours) where
+module Board (Cell, Board (..), isEmpty, livingNeighbours, leftEdge, rightEdge, topEdge, bottomEdge) where
 
 type Cell = (Integer, Integer)
 
@@ -19,3 +19,15 @@ livingNeighbours (Board _ cells) (x, y) = length $ filter id [
   (x    , y - 1) `elem` cells,
   (x + 1, y - 1) `elem` cells
   ]
+
+leftEdge :: Board -> Integer
+leftEdge (Board _ cells) = minimum $ map fst cells
+
+rightEdge :: Board -> Integer
+rightEdge (Board _ cells) = maximum $ map fst cells
+
+topEdge :: Board -> Integer
+topEdge (Board _ cells) = minimum $ map snd cells
+
+bottomEdge :: Board -> Integer
+bottomEdge (Board _ cells) = maximum $ map snd cells
