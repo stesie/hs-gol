@@ -1,4 +1,7 @@
-module Board (Cell, Board (..), isEmpty, livingNeighbours, leftEdge, rightEdge, topEdge, bottomEdge) where
+module Board (Cell, Board (..), isEmpty, livingNeighbours, leftEdge, rightEdge, topEdge, bottomEdge, nextGeneration) where
+
+import Data.Maybe (mapMaybe)
+import Rules (isAlive)
 
 type Cell = (Integer, Integer)
 
@@ -31,3 +34,10 @@ topEdge (Board _ cells) = minimum $ map snd cells
 
 bottomEdge :: Board -> Integer
 bottomEdge (Board _ cells) = maximum $ map snd cells
+
+nextGeneration :: Board -> Board
+nextGeneration board@(Board generation cells) =
+  Board (succ generation) (mapMaybe checkCell cellsToCheck)
+  where
+    checkCell cell = if isAlive (cell `elem` cells) (livingNeighbours board cell) then Just cell else Nothing
+    cellsToCheck = [(x, y) | x <- [(leftEdge board - 1)..(rightEdge board + 1)], y <- [(topEdge board - 1)..(bottomEdge board + 1)]]

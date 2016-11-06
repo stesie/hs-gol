@@ -1,9 +1,7 @@
 module BoardSpec (main, spec) where
 
 import Test.Hspec
-import Data.Maybe (mapMaybe)
 import Board
-import Rules (isAlive)
 
 main :: IO ()
 main = hspec spec
@@ -13,13 +11,6 @@ emptyBoard = Board 0 []
 
 preseededBoard :: [Cell] -> Board
 preseededBoard = Board 0
-
-nextGeneration :: Board -> Board
-nextGeneration board@(Board generation cells) =
-  Board (succ generation) (mapMaybe checkCell cellsToCheck)
-  where
-    checkCell cell = if isAlive (cell `elem` cells) (livingNeighbours board cell) then Just cell else Nothing
-    cellsToCheck = [(x, y) | x <- [(leftEdge board - 1)..(rightEdge board + 1)], y <- [(topEdge board - 1)..(bottomEdge board + 1)]]
 
 generation :: Board -> Integer
 generation (Board generation _) = generation
