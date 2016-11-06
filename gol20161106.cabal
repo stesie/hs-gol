@@ -1,13 +1,13 @@
 name:                gol20161106
 version:             0.1.0.0
-synopsis:            Simple project template from stack
+synopsis:            Simple Game of Life visualization
 description:         Please see README.md
-homepage:            https://github.com/githubuser/gol20161106#readme
+homepage:            https://github.com/stesie/gol20161106#readme
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2016 Author name here
+author:              Stefan Siegl
+maintainer:          stesie@brokenpipe.de
+copyright:           2016 Stefan Siegl
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
