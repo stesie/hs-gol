@@ -1,12 +1,21 @@
 module Board (Cell, Board (..), isEmpty, livingNeighbours, leftEdge, rightEdge, topEdge, bottomEdge, nextGeneration) where
 
 import Data.Maybe (mapMaybe)
+import Data.List (intercalate)
 import Rules (isAlive)
 
 type Cell = (Integer, Integer)
 
 data Board = Board Integer [Cell]
 --  deriving (Eq, Show)
+
+-- FIXME add tests
+instance Show Board where
+  show board@(Board generation cells) =
+    "Generation " ++ show generation ++ "\n"
+     ++ intercalate "\n" (map (showLine board) [(topEdge board)..(bottomEdge board)])
+    where showLine board@(Board _ cells) y = map (\x -> if (x, y) `elem` cells then 'x' else ' ') [(leftEdge board)..(rightEdge board)]
+
 
 isEmpty :: Board -> Bool
 isEmpty (Board _ cells) = null cells
