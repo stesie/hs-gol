@@ -33,6 +33,9 @@ topEdge (Board _ cells) = minimum $ map snd cells
 bottomEdge :: Board -> Integer
 bottomEdge (Board _ cells) = maximum $ map snd cells
 
+generation :: Board -> Integer
+generation (Board generation _) = generation
+
 cells :: Board -> [Cell]
 cells (Board _ xs) = xs
 
@@ -54,6 +57,9 @@ spec = do
 
     it "should handle the 'blinker' well" $ do
       cells (nextGeneration $ preseededBoard [(0, 1), (1, 1), (2, 1)]) `shouldBe` [(1, 0), (1, 1), (1,2)]
+
+    it "increments the generation number" $ do
+      generation (nextGeneration $ emptyBoard) `shouldBe` 1
 
   describe "#livingNeighbours" $ do
     it "should return 0 if there are no neighbours" $ do
