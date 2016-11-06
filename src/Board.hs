@@ -6,7 +6,7 @@ import Rules (isAlive)
 type Cell = (Integer, Integer)
 
 data Board = Board Integer [Cell]
-  deriving (Eq, Show)
+--  deriving (Eq, Show)
 
 isEmpty :: Board -> Bool
 isEmpty (Board _ cells) = null cells
