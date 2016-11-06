@@ -1,15 +1,10 @@
 module RulesSpec (main, spec) where
 
 import Test.Hspec
+import Rules (isAlive)
 
 main :: IO ()
 main = hspec spec
-
-isAlive :: Bool -> Int -> Bool
-isAlive alive neighbours
-  | neighbours == 2 = alive
-  | neighbours == 3 = True
-  | otherwise       = False
 
 spec :: Spec
 spec = do
@@ -27,7 +22,7 @@ spec = do
 
       it "should stay alive, if it is alive" $ do
         isAlive True 2 `shouldBe` True
-  
+
     describe "cells with three neighbours" $ do
       it "should resurrect, if it is currently dead" $ do
         isAlive False 3 `shouldBe` True
