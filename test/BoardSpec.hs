@@ -21,6 +21,17 @@ nextGeneration' [] = []
 nextGeneration' (x:xs)
   | isAlive True 0 == False = nextGeneration' xs
 
+leftEdge :: Board -> Integer
+leftEdge (Board _ cells) = minimum $ map fst cells
+
+rightEdge :: Board -> Integer
+rightEdge (Board _ cells) = maximum $ map fst cells
+
+topEdge :: Board -> Integer
+topEdge (Board _ cells) = minimum $ map snd cells
+
+bottomEdge :: Board -> Integer
+bottomEdge (Board _ cells) = maximum $ map snd cells
 
 spec :: Spec
 spec = do
@@ -65,3 +76,16 @@ spec = do
 
     it "should find 8 living neighbours" $ do
       livingNeighbours (preseededBoard [(2, 1), (2, 2), (1, 2), (0, 2), (0, 1), (0, 0), (1, 0), (2, 0)]) (1, 1) `shouldBe` 8
+
+  describe "find edges" $ do
+    it "should find the left edge of the board" $ do
+      leftEdge (preseededBoard [(3, 3), (5, 5), (1, 7)]) `shouldBe` 1
+
+    it "should find the right edge of the board" $ do
+      rightEdge (preseededBoard [(3, 3), (5, 5), (1, 7)]) `shouldBe` 5
+
+    it "should find the top edge of the board" $ do
+      topEdge (preseededBoard [(3, 3), (5, 5), (1, 7)]) `shouldBe` 3
+
+    it "should find the bottom edge of the board" $ do
+      bottomEdge (preseededBoard [(3, 3), (5, 5), (1, 7)]) `shouldBe` 7
